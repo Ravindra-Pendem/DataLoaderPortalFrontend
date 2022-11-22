@@ -1,0 +1,12 @@
+.navbar-background{
+    background: #5D5C61;
+}
+.navbar-text{
+    color: white;
+}
+.navbar-nav{
+    margin-left: auto;
+}
+.navbar{
+    border-radius: 5px;
+}

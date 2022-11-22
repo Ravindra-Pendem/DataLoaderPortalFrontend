@@ -1,0 +1,28 @@
+<mat-card class="search-card">
+    <mat-card-header>
+        <mat-card-title>Login</mat-card-title>
+    </mat-card-header>
+    <mat-card-content class="card-style">
+        <div class="row">
+            <div class="col-md-3">Username : </div>
+            <div class="col-md-7">
+                <mat-form-field appearance="outline">
+                    <input matInput placeholder="Username" #username>
+                </mat-form-field>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-md-3">Password : </div>
+            <div class="col-md-7">
+                <mat-form-field appearance="outline">
+                    <input type="password" matInput placeholder="Password" #password>
+                </mat-form-field>
+            </div>
+        </div>
+    </mat-card-content>
+    <mat-card-actions>
+        <!-- <button class="button-css" mat-raised-button style="margin-left: 5%;" (click)="register()">Sign Up</button> -->
+        <button class="button-css" mat-raised-button
+            (click)="loginUser(username.value, password.value)" style="margin-left: 46%;">Login</button>
+    </mat-card-actions>
+</mat-card>
