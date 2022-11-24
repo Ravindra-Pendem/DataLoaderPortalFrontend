@@ -1,4 +1,9 @@
 .background-style{
-    /* background: #e9ecef; */
+    background: #7395AE;
+    padding-left: 44px;
+    padding-right: 44px;
     /* overflow-y: hidden !important; */
+}
+.row{
+    height: 100%;
 }

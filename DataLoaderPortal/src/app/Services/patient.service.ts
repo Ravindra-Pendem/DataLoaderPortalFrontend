@@ -1,5 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
+import { url_constants } from '../Constants/url_constants';
 import { IPatients } from '../Interfaces/IPatient';
 import { IStatus } from '../Interfaces/IStatus';
 
@@ -7,17 +8,20 @@ import { IStatus } from '../Interfaces/IStatus';
   providedIn: 'root'
 })
 export class PatientService {
-
-  private _patientUrl = "http://localhost:8085/patient/load/patientdata";
+  public patient:IPatients;
 
   constructor(private http: HttpClient) { }
 
   savePatient(patients: IPatients[]){
-    return this.http.post<Array<IPatients>>(this._patientUrl,patients);
+    return this.http.post<Array<IPatients>>(`${url_constants.SAVE_PATIENT}`,patients);
   }
 
   getPatients(){
-    return this.http.get<IStatus>(this._patientUrl);
+    return this.http.get<IStatus>(`${url_constants.GET_PATIENT}`);
+  }
+
+  updatePatient(patient: IPatients){
+    return this.http.put<IPatients>(`${url_constants.UPDATE_PATIENT}`,patient);
   }
   
 }

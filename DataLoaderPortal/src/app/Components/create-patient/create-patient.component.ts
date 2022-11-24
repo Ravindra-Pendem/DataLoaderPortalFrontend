@@ -1,11 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { IPatients } from 'src/app/Interfaces/IPatient';
 import { PatientService } from 'src/app/Services/patient.service';
 import * as XLSX from 'xlsx'
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-create-patient',
@@ -14,30 +17,30 @@ import * as XLSX from 'xlsx'
 })
 export class CreatePatientComponent implements OnInit {
 
-  excelData:any;
-  patientsList:IPatients[];
-  displayPatients:MatTableDataSource<IPatients>;
+  excelData: any;
+  patientsList: IPatients[];
+  displayPatients: MatTableDataSource<IPatients>;
+  durationInSeconds = 5;
 
   displayedColumns: string[] = ['patientId', 'patientName', 'patientAddress', 'patientDateOfBirth',
-                                'patientEmail','patientContactNumber','patientDrugId','patientDrugName','status','edit'];
-  // dataSource: MatTableDataSource<IPatients>(this.displayPa);
+    'patientEmail', 'patientContactNumber', 'patientDrugId', 'patientDrugName', 'status', 'edit'];
 
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private _patientService:PatientService, private _router:Router) { }
+  constructor(private _patientService: PatientService, private _router: Router, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.displayPatients = new MatTableDataSource<any>();
 
     this._patientService.getPatients()
-    .subscribe(
-      res => {
-        console.log("Base response"+res.userDetils);
-        this.displayPatients.data = res.userDetils;
-      },
-      err => console.log(err)
-    )
+      .subscribe(
+        res => {
+          console.log("Base response" + res.data);
+          this.displayPatients.data = res.data;
+        },
+        err => console.log(err)
+      )
   }
 
   ngAfterViewInit() {
@@ -54,15 +57,15 @@ export class CreatePatientComponent implements OnInit {
     }
   }
 
-  readFile(event: any){
+  readFile(event: any) {
     let file = event.target.files[0];
     let fileReader = new FileReader();
 
     fileReader.readAsBinaryString(file);
-    fileReader.onload = (e) =>{
-      var workBook = XLSX.read(fileReader.result, {type: 'binary'});
+    fileReader.onload = (e) => {
+      var workBook = XLSX.read(fileReader.result, { type: 'binary' });
       var sheetNames = workBook.SheetNames;
-      this.excelData = XLSX.utils.sheet_to_json(workBook.Sheets[sheetNames[0]],{
+      this.excelData = XLSX.utils.sheet_to_json(workBook.Sheets[sheetNames[0]], {
         raw: false,
         // header: this.worksheetHasHeader ? 0 : 1,
         dateNF: "dd/mm/yyyy"
@@ -72,26 +75,60 @@ export class CreatePatientComponent implements OnInit {
 
   }
 
-  uploadFile(){
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
+
+  uploadFile() {
     this.patientsList = this.excelData;
     console.log(this.patientsList);
-    this.patientsList.forEach((element) => {
-      element.status = "INDUCTED";
-    });
+    if (this.patientsList != undefined) {
+      this.patientsList.forEach((element) => {
+        element.status = "INDUCTED";
+      });
+    }
     this._patientService.savePatient(this.patientsList)
-    .subscribe(
-      res => {console.log(res)
-              location.reload()},
-      err => console.log(err)
-    )
+      .subscribe(
+        res => {
+          console.log(res)
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            disableClose: true,
+            panelClass: 'green-dialog',
+            data: { message: "File Uploaded Successfully" },
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed');
+            location.reload();
+          });
+          // this._patientService.getPatients()
+          //   .subscribe(
+          //     res => {
+          //       console.log("Base response" + res.data);
+          //       this.displayPatients.data = res.data;
+          //     },
+          //     err => console.log(err)
+          //   )
+        },
+        err => {
+          console.log(err)
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            disableClose: true,
+            panelClass: 'red-dialog',
+            data: { message: "Please Upload File Correctly"},
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed');
+          });
+        }
+      )
   }
 
-  navigateToEdit(patient){
+  navigateToEdit(patient) {
     console.log(patient);
   }
 
-  editPatient(patient:any){
+  editPatient(patient: any) {
     console.log(patient);
+    this._patientService.patient = patient;
     this._router.navigate(['/edit']);
   }
 

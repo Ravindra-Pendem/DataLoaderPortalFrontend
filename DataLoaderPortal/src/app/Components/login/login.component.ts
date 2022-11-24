@@ -1,7 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
 import { IUser } from 'src/app/Interfaces/IUser';
 import { AuthService } from 'src/app/Services/auth.service';
+import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 
 @Component({
   selector: 'app-login',
@@ -11,8 +14,9 @@ import { AuthService } from 'src/app/Services/auth.service';
 export class LoginComponent implements OnInit {
 
   loginUserData!: IUser;
+  durationInSeconds = 5;
 
-  constructor(private _router:Router, private _auth:AuthService) { 
+  constructor(private _router:Router, private _auth:AuthService, public dialog: MatDialog,private _snackBar: MatSnackBar) { 
     if(this.loginUserData == undefined){
       this.loginUserData = {
         userName: "",
@@ -27,6 +31,8 @@ export class LoginComponent implements OnInit {
   register(){
     console.log("Register works");
   }
+  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
+  verticalPosition: MatSnackBarVerticalPosition = 'top';
 
   loginUser(username, password){
 
@@ -34,16 +40,42 @@ export class LoginComponent implements OnInit {
     this.loginUserData.password = password;
 
     console.log(username+" "+password);
-    // this.loginUser()
+
     this._auth.loginUser(this.loginUserData)
     .subscribe(
       res => {console.log(res)
-        // localStorage.setItem('token', res.token)
+        if(res.statusCode == 200){
+        localStorage.setItem('token', res.data.token)
+        const dialogRef = this.dialog.open(AlertDialogComponent, {
+          disableClose: true,
+          panelClass: 'green-dialog',
+          data: {message: "Login Successfull"},
+        });
+        dialogRef.afterClosed().subscribe(result => {
+          console.log('The dialog was closed');
         this._router.navigate(['/create'])
+        });}
+        else{
+          const dialogRef = this.dialog.open(AlertDialogComponent, {
+            disableClose: true,
+          panelClass: 'red-dialog',
+            data: {message: "Username or Password doesn't exist or username or Password entered is wrong"},
+          });
+          dialogRef.afterClosed().subscribe(result => {
+            console.log('The dialog was closed');
+          });
+        }
+
+        // this._snackBar.open('Login Successfull  !!', 'Ok', {
+        //   horizontalPosition: this.horizontalPosition,
+        //   verticalPosition: this.verticalPosition,
+        //   duration: this.durationInSeconds * 1000,
+        //   panelClass: 'green-snackbar',
+        // });
+        // this._router.navigate(['/create'])
       },
-      err => console.log(err)
+      err => {console.log(err)}
     )
-    // this._router.navigate(['/create']);
   }
 
 }

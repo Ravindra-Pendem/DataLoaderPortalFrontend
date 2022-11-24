@@ -4,6 +4,46 @@ html, body { height: 100%; }
 body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; overflow: scroll;}
 
 .button-css{
-    background: #7395AE;
+    background: #379683;
     color: white; 
+}
+
+.green-snackbar {
+    background: green;
+    color: white;
+}
+.green-snackbar button {
+    background-color: green;
+    color: white;
+}
+
+.red-snackbar {
+    background: red;
+    color: white;
+}
+.red-snackbar button {
+    background-color: red;
+    color: white;
+}
+.green-dialog .mat-dialog-container{
+    background: #a8f0c6;
+    color: black;
+    width: 419px;
+    height: 145px;
+    font-size: 15px;
+}
+.green-dialog .mat-dialog-container button {
+    background-color:green;
+    color: black;
+}
+.red-dialog .mat-dialog-container{
+    background: #f7a7a3;
+    color: black;
+    width: 419px;
+    height: 145px;
+    font-size: 15px;
+}
+.red-dialog .mat-dialog-container button {
+    background-color:red;
+    color: black;
 }

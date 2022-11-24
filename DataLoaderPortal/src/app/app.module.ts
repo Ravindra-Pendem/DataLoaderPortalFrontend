@@ -51,11 +51,16 @@ import { MatTooltipModule } from '@angular/material/tooltip';
 import { MatTreeModule } from '@angular/material/tree';
 import { OverlayModule } from '@angular/cdk/overlay';
 import { LoginComponent } from './Components/login/login.component';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { HeaderComponent } from './Components/header/header.component';
 import { FooterComponent } from './Components/footer/footer.component';
 import { CreatePatientComponent } from './Components/create-patient/create-patient.component';
 import { EditPatientComponent } from './Components/edit-patient/edit-patient.component';
+import { AlertDialogComponent } from './Components/alert-dialog/alert-dialog.component';
+import { AuthService } from './Services/auth.service';
+import { AuthGuard } from './Services/auth.guard';
+import { PatientService } from './Services/patient.service';
+import { TokenInterceptorService } from './Services/token-interceptor.service';
 
 @NgModule({
   declarations: [
@@ -64,7 +69,8 @@ import { EditPatientComponent } from './Components/edit-patient/edit-patient.com
     HeaderComponent,
     FooterComponent,
     CreatePatientComponent,
-    EditPatientComponent
+    EditPatientComponent,
+    AlertDialogComponent
   ],
   imports: [
     BrowserModule,
@@ -119,7 +125,13 @@ import { EditPatientComponent } from './Components/edit-patient/edit-patient.com
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [],
+  providers: [AuthService, AuthGuard, PatientService,
+    {
+      provide: HTTP_INTERCEPTORS,
+      useClass: TokenInterceptorService,
+      multi: true
+    }
+  ],
   bootstrap: [AppComponent]
 })
 export class AppModule { }

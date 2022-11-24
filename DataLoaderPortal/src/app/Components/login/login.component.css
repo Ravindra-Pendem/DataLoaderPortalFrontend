@@ -1,16 +1,32 @@
-:host ::ng-deep .mat-form-field-flex > .mat-form-field-infix { padding: 0.4em 0px !important;}
+/* :host ::ng-deep .mat-form-field-flex > .mat-form-field-infix { padding: 0.4em 0px !important;}
 :host ::ng-deep .mat-form-field-label-wrapper { top: -1.5em; }
 
 :host ::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
     transform: translateY(-1.1em) scale(.75);
     width: 133.33333%;
-}
+} */
 
 .search-card {
-    margin: 50px 20px 50px 217px;
+    /* margin: 50px 20px 50px 217px;
     max-width: 600px;
-    background: paleturquoise;
+    background: #ADADAD; */
+
+    margin: 131px 0px 0px 325px;
+    max-width: 540px;
+    background: #ADADAD;
+    height: 300px;
 }  
 .card-style{
     margin-left: 40px;
+}
+.mat-card-header .mat-card-title {
+    font-size: 28px;
+}
+.mat-card-header .mat-card-title {
+    margin-bottom: 40px;
+    margin-left: 196px;
+    /* font-size: 20px; */
+}
+.text-field{
+    font-size: 17px;
 }

@@ -1,0 +1,32 @@
+.card{
+    width: 60%;
+    margin-left: 20%;
+    margin-top: 15px;
+    margin-bottom: 15px;
+    /* background: #84CEEB;
+    background: #88BDBC; */
+    /* background: #8FC1E3; */
+    background: #A4B3B6;
+}
+.card-header{
+    font-size: 22px;
+    font-weight: 500;
+}
+.text-field{
+    font-size: 17px;
+    margin-left: 14%;
+    padding-left: 6%;
+    padding-top: 6px;
+}
+.save-css{
+    margin-left: 25px;
+}
+.edit-css{
+    margin-left: 18px;
+    margin-right: 10px;
+}
+.form-control:disabled {
+    background-color: lightgrey;
+    opacity: 1;
+    cursor: not-allowed;
+}
