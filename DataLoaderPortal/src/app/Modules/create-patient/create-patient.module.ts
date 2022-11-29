@@ -1,9 +1,9 @@
 import { NgModule } from '@angular/core';
-import { BrowserModule } from '@angular/platform-browser';
+import { CommonModule } from '@angular/common';
 
-import { AppRoutingModule } from './app-routing.module';
-import { AppComponent } from './app.component';
-import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
+import { CreatePatientRoutingModule } from './create-patient-routing.module';
+import { CreatePatientComponent } from 'src/app/Components/create-patient/create-patient.component';
+
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 
 import { MatButtonModule } from '@angular/material/button';
@@ -16,31 +16,19 @@ import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
-import { LoginComponent } from './Components/login/login.component';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
-import { HeaderComponent } from './Components/header/header.component';
-import { FooterComponent } from './Components/footer/footer.component';
-import { AlertDialogComponent } from './Components/alert-dialog/alert-dialog.component';
-import { AuthService } from './Services/auth.service';
-import { AuthGuard } from './Services/auth.guard';
-import { TokenInterceptorService } from './Services/token-interceptor.service';
-import { CreatePatientModule } from './Modules/create-patient/create-patient.module';
-import { EditPatientModule } from './Modules/edit-patient/edit-patient.module';
+import { PatientService } from 'src/app/Services/patient.service';
+import { TokenInterceptorService } from 'src/app/Services/token-interceptor.service';
+import { FooterComponent } from 'src/app/Components/footer/footer.component';
+import { HeaderComponent } from 'src/app/Components/header/header.component';
 
 @NgModule({
   declarations: [
-    AppComponent,
-    LoginComponent,
-    HeaderComponent,
-    FooterComponent,
-    AlertDialogComponent
+    CreatePatientComponent
   ],
   imports: [
-    BrowserModule,
-    AppRoutingModule,
-    CreatePatientModule,
-    EditPatientModule,
-    BrowserAnimationsModule,
+    CommonModule,
+    CreatePatientRoutingModule,
     MatButtonModule,
     MatButtonToggleModule,
     MatCardModule,
@@ -55,13 +43,13 @@ import { EditPatientModule } from './Modules/edit-patient/edit-patient.module';
     FormsModule,
     ReactiveFormsModule
   ],
-  providers: [AuthService, AuthGuard,
+  providers: [
+    PatientService,
     {
       provide: HTTP_INTERCEPTORS,
       useClass: TokenInterceptorService,
       multi: true
-    }
-  ],
-  bootstrap: [AppComponent]
+    }, FooterComponent, HeaderComponent
+  ]
 })
-export class AppModule { }
+export class CreatePatientModule { }

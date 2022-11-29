@@ -1,7 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
+import { FormArray, FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
 import { MatPaginator } from '@angular/material/paginator';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { MatSort } from '@angular/material/sort';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
@@ -18,6 +18,7 @@ import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 export class CreatePatientComponent implements OnInit {
 
   excelData: any;
+  patientsForm: FormGroup;
   patientsList: IPatients[];
   displayPatients: MatTableDataSource<IPatients>;
   durationInSeconds = 5;
@@ -28,7 +29,15 @@ export class CreatePatientComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   @ViewChild(MatSort) sort: MatSort;
 
-  constructor(private _patientService: PatientService, private _router: Router, public dialog: MatDialog) { }
+  constructor(private _patientService: PatientService, private _router: Router, public dialog: MatDialog,
+    private fb: FormBuilder) {
+
+    this.patientsForm =
+      this.fb.group({
+        patients: fb.array([]),
+      })
+
+  }
 
   ngOnInit(): void {
     this.displayPatients = new MatTableDataSource<any>();
@@ -36,11 +45,18 @@ export class CreatePatientComponent implements OnInit {
     this._patientService.getPatients()
       .subscribe(
         res => {
-          console.log("Base response" + res.data);
-          this.displayPatients.data = res.data;
+          console.log("Base response" + JSON.stringify(res.data));
+          let patientData = [];
+          res.data.forEach((element) => {
+            if (element.status != "FAILED") {
+              patientData.push(element);
+            }
+          });
+          this.displayPatients.data = patientData;
         },
         err => console.log(err)
       )
+
   }
 
   ngAfterViewInit() {
@@ -67,26 +83,40 @@ export class CreatePatientComponent implements OnInit {
       var sheetNames = workBook.SheetNames;
       this.excelData = XLSX.utils.sheet_to_json(workBook.Sheets[sheetNames[0]], {
         raw: false,
-        // header: this.worksheetHasHeader ? 0 : 1,
-        dateNF: "dd/mm/yyyy"
+        dateNF: "mm/dd/yyyy"
       });
       console.log(this.excelData);
     }
 
   }
 
-  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-  verticalPosition: MatSnackBarVerticalPosition = 'top';
-
   uploadFile() {
     this.patientsList = this.excelData;
     console.log(this.patientsList);
+
     if (this.patientsList != undefined) {
       this.patientsList.forEach((element) => {
         element.status = "INDUCTED";
       });
     }
-    this._patientService.savePatient(this.patientsList)
+
+    let patients = this.patientsForm.get('patients') as FormArray;
+    this.patientsList.forEach((ele, index) => {
+      patients.push(this.patientsFormControl());
+      patients.at(patients.length - 1).setValue(ele);
+    });
+
+    if (this.patientsForm.invalid) {
+      const patientsControl = this.patientsForm.get('patients') as FormArray;
+      patientsControl.controls.forEach((ele) => {
+        if (ele.invalid) {
+          ele.get('status').setValue("FAILED");
+        }
+      });
+
+    }
+    console.log(this.patientsForm);
+    this._patientService.savePatient(this.patientsForm.get('patients').value)
       .subscribe(
         res => {
           console.log(res)
@@ -99,21 +129,13 @@ export class CreatePatientComponent implements OnInit {
             console.log('The dialog was closed');
             location.reload();
           });
-          // this._patientService.getPatients()
-          //   .subscribe(
-          //     res => {
-          //       console.log("Base response" + res.data);
-          //       this.displayPatients.data = res.data;
-          //     },
-          //     err => console.log(err)
-          //   )
         },
         err => {
           console.log(err)
           const dialogRef = this.dialog.open(AlertDialogComponent, {
             disableClose: true,
             panelClass: 'red-dialog',
-            data: { message: "Please Upload File Correctly"},
+            data: { message: "Please Upload File." },
           });
           dialogRef.afterClosed().subscribe(result => {
             console.log('The dialog was closed');
@@ -122,13 +144,27 @@ export class CreatePatientComponent implements OnInit {
       )
   }
 
+  patientsFormControl(): FormGroup {
+    return this.fb.group({
+      patientName: ['', [Validators.required, Validators.pattern('[a-zA-Z]*'), Validators.maxLength(30), Validators.minLength(5)]],
+      patientAddress: [''],
+      patientDateOfBirth: [''],
+      patientEmail: ['', [Validators.required, Validators.email]],
+      patientContactNumber: ['', [Validators.required, Validators.maxLength(10), Validators.minLength(10)]],
+      patientDrugId: ['', [Validators.required]],
+      patientDrugName: [''],
+      status: ['']
+    })
+  }
+  // (?:\(\d{5}\)|\d{5}-)\d{4}-\d{2}
+
   navigateToEdit(patient) {
     console.log(patient);
   }
 
-  editPatient(patient: any) {
+  editPatient(patient: IPatients) {
     console.log(patient);
-    this._patientService.patient = patient;
+    sessionStorage.setItem('patient', JSON.stringify(patient));
     this._router.navigate(['/edit']);
   }
 

@@ -2,8 +2,8 @@ import { formatDate } from '@angular/common';
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatDialog } from '@angular/material/dialog';
-import { MatSnackBar, MatSnackBarHorizontalPosition, MatSnackBarVerticalPosition } from '@angular/material/snack-bar';
 import { Router } from '@angular/router';
+import { IPatients } from 'src/app/Interfaces/IPatient';
 import { PatientService } from 'src/app/Services/patient.service';
 import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 
@@ -14,17 +14,13 @@ import { AlertDialogComponent } from '../alert-dialog/alert-dialog.component';
 })
 export class EditPatientComponent implements OnInit {
 
-  edit:boolean = false;
+  edit: boolean = false;
   editPatient: FormGroup;
 
-  durationInSeconds =5;
-  horizontalPosition: MatSnackBarHorizontalPosition = 'center';
-  verticalPosition: MatSnackBarVerticalPosition = 'top';
-
-  constructor(private fb: FormBuilder, private _patientService: PatientService, private _router:Router, public dialog: MatDialog) { 
+  constructor(private fb: FormBuilder, private _patientService: PatientService, private _router: Router, public dialog: MatDialog) {
 
     this.editPatient = this.fb.group({
-      patientId:[''],
+      patientId: [''],
       patientName: [''],
       patientAddress: [''],
       patientDateOfBirth: [''],
@@ -37,24 +33,26 @@ export class EditPatientComponent implements OnInit {
   }
 
   ngOnInit(): void {
-    this.editPatient.setValue(this._patientService.patient);
-    this.editPatient.get('patientDateOfBirth').setValue(formatDate(this.editPatient.get('patientDateOfBirth').value,'yyyy-MM-dd','en'));
-    // formatDate(this.editPatient.get('patientDateOfBirth').value, 'MM-dd-yyyy', 'en')
+    let patient: IPatients;
+    patient = JSON.parse(sessionStorage.getItem('patient').toString());
+    this.editPatient.setValue(patient);
+    this.editPatient.get('patientDateOfBirth').setValue(formatDate(this.editPatient.get('patientDateOfBirth').value, 'yyyy-MM-dd', 'en'));
   }
 
-  changeEditForSave(){
+  changeEditForSave() {
     this.edit = !this.edit;
     this.editPatient.disable();
   }
 
-  changeEditForEdit(){
+  changeEditForEdit() {
     this.edit = !this.edit;
     this.editPatient.enable();
   }
 
-  saveEditPatient(){
+  saveEditPatient() {
     this._patientService.updatePatient(this.editPatient.value).subscribe(
-      res => {console.log(res)
+      res => {
+        console.log(res)
         const dialogRef = this.dialog.open(AlertDialogComponent, {
           disableClose: true,
           panelClass: 'green-dialog',
@@ -64,7 +62,7 @@ export class EditPatientComponent implements OnInit {
           console.log('The dialog was closed');
           this._router.navigate(['/create'])
         });
-          },
+      },
       err => console.log(err)
     )
   }

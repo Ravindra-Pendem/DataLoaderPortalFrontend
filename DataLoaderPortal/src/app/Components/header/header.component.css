@@ -1,12 +1,15 @@
-.navbar-background{
+.navbar-background {
     background: #5D5C61;
 }
-.navbar-text{
+
+.navbar-text {
     color: white;
 }
-.navbar-nav{
+
+.navbar-nav {
     margin-left: auto;
 }
-.navbar{
+
+.navbar {
     border-radius: 5px;
 }

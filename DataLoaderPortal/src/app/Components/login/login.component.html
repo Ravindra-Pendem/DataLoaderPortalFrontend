@@ -2,28 +2,44 @@
     <mat-card-header>
         <mat-card-title>Login</mat-card-title>
     </mat-card-header>
-    <mat-card-content class="card-style">
+    <form class="card-style needs-validation" [formGroup]="loginForm" novalidate>
         <div class="row">
             <div class="col-md-3 text-field">Username : </div>
-            <div class="col-md-7 mb-3">
-                <!-- <mat-form-field appearance="outline"> -->
-                    <input class="form-control" placeholder="Username" #username>
-                <!-- </mat-form-field> -->
+            <div class="col-md-7 mb-3 has-validation">
+                <input class="form-control" placeholder="Username" formControlName="userName" id="validationDefault04"
+                    required />
+                <div
+                    *ngIf="loginForm.get('userName').invalid && (loginForm.get('userName').dirty || loginForm.get('userName').touched)">
+                    <div class="invalid-feedback" *ngIf="loginForm.get('userName').hasError('required')" role="alert">
+                        Username is required.
+                    </div>
+                    <div class="invalid-feedback" *ngIf="loginForm.get('userName').hasError('email')" role="alert">
+                        Username should be email.
+                    </div>
+                </div>
             </div>
         </div>
         <div class="row">
             <div class="col-md-3 text-field">Password : </div>
-            <div class="col-md-7 mb-3">
-                <!-- <mat-form-field appearance="outline"> -->
-                    <input class="form-control" type="password" placeholder="Password" #password>
-                <!-- </mat-form-field> -->
+            <div class="col-md-7 mb-3 has-validation">
+                <input class="form-control" type="password" placeholder="Password" formControlName="password"
+                    id="validationDefault05" required>
+                <div
+                    *ngIf="loginForm.get('password').invalid && (loginForm.get('password').dirty || loginForm.get('password').touched)">
+                    <div class="invalid-feedback" *ngIf="loginForm.get('password').hasError('required')" role="alert">
+                        Password is required.
+                    </div>
+                    <div class="invalid-feedback" *ngIf="loginForm.get('password').hasError('pattern')" role="alert">
+                        Password should contain atleast 8 characters and one special character, one lowercase letter,
+                        one uppercase letter
+                    </div>
+                </div>
             </div>
         </div>
-    </mat-card-content>
+
+    </form>
     <mat-card-actions>
-        <!-- <button class="button-css" mat-raised-button style="margin-left: 5%;" (click)="register()">Sign Up</button> -->
-        <button class="button-css" mat-raised-button
-            (click)="loginUser(username.value, password.value)" style="margin-left: 33%;
+        <button class="button-css" mat-raised-button (click)="loginUser()" style="margin-left: 33%;
             width: 257px;">Login</button>
     </mat-card-actions>
 </mat-card>

@@ -1,7 +1,7 @@
 <div class="row">
-    <!-- <div class="col-md-0"></div> -->
     <div class="col-md-12 background-style">
+        <app-header *ngIf="_auth.loggedIn()"></app-header>
         <router-outlet></router-outlet>
+        <app-footer *ngIf="_auth.loggedIn()"></app-footer>
     </div>
-    <!-- <div class="col-md-0"></div> -->
 </div>

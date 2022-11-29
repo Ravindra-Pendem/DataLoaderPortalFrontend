@@ -1,26 +1,21 @@
-/* :host ::ng-deep .mat-form-field-flex > .mat-form-field-infix { padding: 0.4em 0px !important;}
-:host ::ng-deep .mat-form-field-label-wrapper { top: -1.5em; }
-
-:host ::ng-deep .mat-form-field-appearance-outline.mat-form-field-can-float.mat-form-field-should-float .mat-form-field-label {
-    transform: translateY(-1.1em) scale(.75);
-    width: 133.33333%;
-} */
-
 .search-card {
-    margin: 30px 274px;
-    max-width: 500px;
-    height: 220px;
-    background: #83677B;
+  margin: 30px 274px;
+  max-width: 500px;
+  height: 220px;
+  background: #83677B;
 }
-.card-style{
-    margin-left: 40px;
+
+.card-style {
+  margin-left: 40px;
 }
-.subscribe-button{
-    background: #379683;
-    color: white;
-    margin-top: 10px;
+
+.subscribe-button {
+  background: #379683;
+  color: white;
+  margin-top: 10px;
 }
-.edit-button{
+
+.edit-button {
   background: #379683;
   color: white;
   font-size: 13px;
@@ -29,12 +24,14 @@
   width: auto;
   margin-left: 5px;
 }
-.upload-text{
+
+.upload-text {
   font-size: 16px;
 }
-.upload-button{
+
+.upload-button {
   background: #379683;
-  color: white; 
+  color: white;
   width: 116px;
   height: 37px;
 }
@@ -43,28 +40,21 @@
   background-color: #393939;
   color: white;
 }
+
 .mat-header-cell:not(:first-child) {
   padding-left: 0;
 }
 
-/* Style just the text in the header */
 .mat-header-cell span {
   font-weight: 600;
   font-stretch: normal;
   line-height: normal;
   letter-spacing: 0.5px;
 }
-/* Round the top table corners */
-/* .mat-header-cell:first-child {
-  border-top-left-radius: 5px;
-}
-.mat-header-cell:last-child {
-  border-top-right-radius: 5px;
-} */
 
-.mat-table{    
+.mat-table {
   border-radius: 8px;
-  overflow:hidden !important;
+  overflow: hidden !important;
 }
 
 .mat-header-row {
@@ -74,12 +64,10 @@
 ::ng-deep .mat-sort-header-arrow {
   position: relative;
   left: -1.5rem;
-  display: none!important;
+  display: none !important;
   opacity: 0;
 }
 
-/* Row styles */
-/* ---------------------------------------------------------- */
 .mat-row:nth-child(2n) {
   background-color: #e1d9d9;
 }
@@ -88,93 +76,51 @@
   border: none;
 }
 
-/* table {
-    width: 90%;
-  }
-  
-.mat-mdc-form-field {
-    font-size: 14px;
-    width: 90%;
-}
-  
-td, th {
-    width: 25%;
-} */
 table {
-    width: 100%;
-    table-layout: fixed;
-  }
-  
-  th, td {
-    height: 2em; 
-    line-height: 1em;
-    text-overflow: ellipsis;
-    cursor: pointer;
-    word-break: break-all;
-    overflow:hidden;
-    white-space: nowrap;
-  }
-  th:hover, td:hover{
-    overflow: visible; 
-    white-space: normal;
-    height:auto;  /* just added this line */
+  width: 100%;
+  table-layout: fixed;
 }
-.search-input{
+
+th,
+td {
+  height: 2em;
+  line-height: 1em;
+  text-overflow: ellipsis;
+  cursor: pointer;
+  word-break: break-all;
+  overflow: hidden;
+  white-space: nowrap;
+}
+
+th:hover,
+td:hover {
+  overflow: visible;
+  white-space: normal;
+  height: auto;
+}
+
+.search-input {
   width: 200px;
   margin-left: 13px;
 }
-.search-text{
+
+.search-text {
   margin-left: 42px;
   font-size: 18px;
 }
-/* Mat paginator styles */
-::ng-deep .mat-paginator-outer-container{
+
+::ng-deep .mat-paginator-outer-container {
   background: #55BCC9;
   color: white;
   border-radius: 10px;
   border: 2px solid #185bc3;
 }
-::ng-deep .mat-paginator-range-actions{
+
+::ng-deep .mat-paginator-range-actions {
   background-color: #185bc3;
   border-radius: 20px;
 }
+
 .mat-paginator {
   background: none;
 }
-
-/* .mat-column-patientId {
-    flex: 0 0 28% !important;
-}
-.mat-column-patientContactNumber {
-    flex: 0 0 50% !important;
-} */
-
-/* .mat-table {
-    overflow-x: scroll;
-  }
-  
-  .mat-cell,
-  .mat-header-cell {
-    word-wrap: initial;
-    display: table-cell;
-    padding: 0px 10px;
-    line-break: unset;
-    width: 100%;
-    white-space: nowrap;
-    overflow: hidden;
-    vertical-align: middle;
-  }
-  
-  .mat-row,
-  .mat-header-row {
-    display: table-row;
-  } */
-
-  /* .mat-table {
-    overflow-x: scroll;
-}
-
-.mat-row,
-.mat-header-row {
-    min-width: 800px;
-} */

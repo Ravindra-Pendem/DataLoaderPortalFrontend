@@ -14,7 +14,7 @@ export class AlertDialogComponent implements OnInit {
   ngOnInit(): void {
   }
 
-  closeDialog(){
+  closeDialog() {
     this.dialogRef.close();
   }
 

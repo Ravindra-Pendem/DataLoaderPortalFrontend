@@ -8,23 +8,6 @@ body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; overflow: s
     color: white; 
 }
 
-.green-snackbar {
-    background: green;
-    color: white;
-}
-.green-snackbar button {
-    background-color: green;
-    color: white;
-}
-
-.red-snackbar {
-    background: red;
-    color: white;
-}
-.red-snackbar button {
-    background-color: red;
-    color: white;
-}
 .green-dialog .mat-dialog-container{
     background: #a8f0c6;
     color: black;

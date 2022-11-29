@@ -1,6 +1,9 @@
-import { HttpClient, HttpHeaders } from '@angular/common/http';
+import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Router } from '@angular/router';
+import { Observable } from 'rxjs';
+import { url_constants } from '../Constants/url_constants';
+import { IStatus } from '../Interfaces/IStatus';
 import { IUser } from '../Interfaces/IUser';
 
 @Injectable({
@@ -8,26 +11,23 @@ import { IUser } from '../Interfaces/IUser';
 })
 export class AuthService {
 
-  private _loginUrl = "http://localhost:8085/account/login";
-
   constructor(private http: HttpClient, private _router: Router) { }
 
-  loginUser(user: IUser){
-    return this.http.post<any>(this._loginUrl, user);
+  loginUser(user: IUser) : Observable<IStatus> {
+    return this.http.post<any>(url_constants.LOGIN, user);
   }
 
-  loggedIn(){
-    return !!localStorage.getItem('token');
+  loggedIn() {
+    return !!JSON.parse(sessionStorage.getItem('token'));
   }
 
-  logoutUser(){
-    localStorage.removeItem('token');
+  logoutUser() {
+    sessionStorage.removeItem('token');
     this._router.navigate(['/login']);
-    // location.reload();
   }
 
-  getToken(){
-    return localStorage.getItem('token');
+  getToken() {
+    return JSON.parse(sessionStorage.getItem('token'));
   }
 
 }
